@@ -1,0 +1,5 @@
+git add -f screenshots
+git add .gitignore README.md
+git commit -m "Added screenshots folder to repository"
+git push
+

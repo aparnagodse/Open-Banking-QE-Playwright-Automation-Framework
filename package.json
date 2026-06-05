@@ -1,7 +1,7 @@
 {
   "name": "playwright-demo",
   "version": "1.0.0",
-  "description": "Full Stack Playwright Automation Framework with Open Banking CDR, Contract Testing, Database Validation, Allure Reporting, and Enterprise QE Scenarios",
+  "description": "Enterprise Playwright QE Framework for Open Banking CDR, API Validation, Contract Testing, Database Reconciliation, Accessibility, Performance Validation, and Enterprise Reporting",
   "type": "module",
   "scripts": {
     "start": "node server.js",
@@ -11,23 +11,26 @@
     "test:debug": "npx playwright test --debug",
     "test:cdr": "npx playwright test tests/api/cdr",
     "test:database": "npx playwright test tests/database",
-    "test:data": "npx playwright test tests/data",
     "test:performance": "npx playwright test tests/performance",
-    "test:enterprise": "npm run test:cdr && npm run test:database && npm run test:performance",
+    "test:accessibility": "npx playwright test tests/accessibility",
+    "test:web": "npx playwright test tests/web",
+    "test:enterprise": "npx playwright test tests/api/cdr tests/database tests/performance tests/accessibility",
+    "test:enterprise:allure": "rm -rf allure-results allure-report && npx playwright test tests/api/cdr tests/database tests/performance tests/accessibility --reporter=line,allure-playwright && npx allure generate allure-results --clean -o allure-report && npx allure open allure-report",
+    "test:failure-demo": "npx playwright test tests/web",
     "allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
     "allure:open": "allure open ./allure-report"
   },
   "devDependencies": {
     "@playwright/test": "^1.54.0",
     "allure-commandline": "^2.41.0",
-    "allure-playwright": "^3.9.0"
+    "allure-playwright": "^3.9.0",
+    "lighthouse": "^13.3.0"
   },
   "dependencies": {
     "@axe-core/playwright": "^4.11.3",
     "ajv": "^8.20.0",
     "ajv-formats": "^3.0.1",
     "chrome-launcher": "^1.2.1",
-    "lighthouse": "^12.8.2",
     "mysql2": "^3.22.3",
     "node-fetch": "^3.3.2",
     "swagger-parser": "^10.0.3"
