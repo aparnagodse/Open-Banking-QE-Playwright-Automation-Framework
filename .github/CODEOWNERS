@@ -1,0 +1,89 @@
+# =============================================================
+# CODEOWNERS — Open Banking QE Platform
+# =============================================================
+# GitHub enforces these reviews automatically on every PR.
+# Format: <path-pattern>  <@github-username or @org/team>
+#
+# HOW TO USE:
+#   Replace placeholder team handles with your actual GitHub
+#   org teams or individual usernames before committing.
+#
+#   Org team format:   @your-org/team-name
+#   Individual format: @github-username
+#
+# PRECEDENCE: Later rules override earlier ones.
+# =============================================================
+
+# ── Default owner for everything not matched below ───────────
+*                                   @your-org/qe-platform-team
+
+# ── GitHub / CI/CD config ────────────────────────────────────
+# Any change to pipeline or governance config requires
+# platform lead + security review.
+.github/                            @your-org/qe-platform-lead @your-org/security-team
+.github/workflows/                  @your-org/qe-platform-lead @your-org/security-team
+.github/CODEOWNERS                  @your-org/qe-platform-lead
+
+# ── Authentication and credential handling ───────────────────
+# CRITICAL: Token management touches live CDR credentials.
+# Requires platform lead + security team sign-off.
+utils/auth-helper.js                @your-org/qe-platform-lead @your-org/security-team
+fixtures/api-fixtures.js            @your-org/qe-platform-lead @your-org/security-team
+
+# ── AI modules ───────────────────────────────────────────────
+# AI-generated content entering the suite must be reviewed by
+# the platform lead. MCP server changes require security review.
+ai/                                 @your-org/qe-platform-lead
+ai/mcp-server.js                    @your-org/qe-platform-lead @your-org/security-team
+ai/prompt-templates/                @your-org/qe-platform-lead @your-org/qe-cdr-sme
+ai/prompt-registry.json             @your-org/qe-platform-lead
+
+# ── CDR schemas — source of truth for contract validation ────
+# Schema changes can silently break contract tests across all
+# test categories. Requires CDR SME sign-off.
+test-data/schemas/                  @your-org/qe-platform-lead @your-org/qe-cdr-sme
+test-data/mock-responses/           @your-org/qe-platform-lead @your-org/qe-cdr-sme
+
+# ── Playwright config — affects all test execution ───────────
+playwright.config.js                @your-org/qe-platform-lead
+
+# ── Shared utilities ─────────────────────────────────────────
+utils/                              @your-org/qe-platform-team
+utils/ai-failure-analysis.js        @your-org/qe-platform-lead
+utils/schema-validator.js           @your-org/qe-platform-lead @your-org/qe-cdr-sme
+utils/reporter.js                   @your-org/qe-platform-lead
+
+# ── Fixtures ─────────────────────────────────────────────────
+fixtures/                           @your-org/qe-platform-team
+
+# ── Security tests ───────────────────────────────────────────
+# Security test changes reviewed by security team.
+tests/security/                     @your-org/qe-platform-lead @your-org/security-team
+
+# ── Contract tests ───────────────────────────────────────────
+# CDR contract changes need CDR SME review.
+tests/contract/                     @your-org/qe-platform-lead @your-org/qe-cdr-sme
+
+# ── Environment config ───────────────────────────────────────
+# .env files should never be committed. If they appear in a PR,
+# the security team must review immediately.
+config/environments/                @your-org/qe-platform-lead @your-org/security-team
+
+# ── Architecture docs ────────────────────────────────────────
+docs/architecture/                  @your-org/qe-platform-lead
+docs/decisions/                     @your-org/qe-platform-lead
+
+# ── Package dependencies ─────────────────────────────────────
+# Dependency changes require platform lead review to prevent
+# supply-chain risk.
+package.json                        @your-org/qe-platform-lead @your-org/security-team
+package-lock.json                   @your-org/qe-platform-lead
+
+# =============================================================
+# TEAM DEFINITIONS (configure in GitHub org settings)
+# =============================================================
+# @your-org/qe-platform-lead  — 1 person: framework owner
+# @your-org/qe-platform-team  — all QE automation engineers
+# @your-org/qe-cdr-sme        — CDR domain subject matter expert
+# @your-org/security-team     — AppSec / platform security
+# =============================================================

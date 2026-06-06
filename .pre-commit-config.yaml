@@ -1,0 +1,113 @@
+# .pre-commit-config.yaml
+# =============================================================
+# Pre-commit hooks — Open Banking QE Platform
+# =============================================================
+# Runs automatically before every git commit.
+# Prevents secrets and style violations from entering the repo.
+#
+# SETUP (one-time, per developer):
+#   pip install pre-commit          # or: brew install pre-commit
+#   pre-commit install              # installs the git hook
+#   pre-commit run --all-files      # validate existing files
+#
+# To skip in an emergency (use sparingly):
+#   git commit --no-verify -m "message"
+#   Document the reason in the PR description.
+# =============================================================
+
+repos:
+
+  # ── Secret detection ────────────────────────────────────────
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      - id: detect-secrets
+        name: Detect secrets
+        args:
+          - '--baseline'
+          - '.secrets.baseline'
+        exclude: |
+          (?x)^(\
+            .*\.example$|\
+            docs/.*\.md$|\
+            test-data/mock-responses/.*\.json$\
+          )$
+
+  # ── Prevent committing .env files ─────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: no-commit-to-branch
+        name: Block direct commits to main/develop
+        args: ['--branch', 'main', '--branch', 'develop']
+
+      - id: check-added-large-files
+        name: Block large files (>500KB)
+        args: ['--maxkb=500']
+
+      - id: check-json
+        name: Validate JSON syntax
+        files: \.(json)$
+
+      - id: check-yaml
+        name: Validate YAML syntax
+        files: \.(yml|yaml)$
+
+      - id: end-of-file-fixer
+        name: Ensure files end with newline
+        exclude: \.(png|jpg|gif|ico)$
+
+      - id: trailing-whitespace
+        name: Remove trailing whitespace
+
+      - id: forbid-new-submodules
+        name: Block new git submodules
+
+  # ── CDR-specific secret patterns ─────────────────────────
+  - repo: local
+    hooks:
+      - id: no-hardcoded-urls
+        name: Block hardcoded environment URLs
+        language: pygrep
+        entry: 'https?://[a-z0-9\-]+\.(sit|uat|dev|prod)\.'
+        types: [javascript, json]
+        exclude: |
+          (?x)^(\
+            docs/.*|\
+            test-data/mock-responses/.*|\
+            .*\.example.*\
+          )$
+
+      - id: no-bearer-tokens
+        name: Block hardcoded Bearer tokens
+        language: pygrep
+        entry: 'Bearer\s+[A-Za-z0-9\-_\.]{20,}'
+        types: [javascript, json, text]
+        exclude: ^docs/.*$
+
+      - id: no-env-files
+        name: Block .env file commits
+        language: pygrep
+        entry: ''
+        files: '^\.env\.'
+        exclude: '\.example$'
+
+  # ── ESLint ───────────────────────────────────────────────
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint
+        language: node
+        entry: npx eslint --fix
+        types: [javascript]
+        exclude: ^(node_modules/|playwright-report/|reports/)
+
+  # ── Prettier ──────────────────────────────────────────────
+  - repo: local
+    hooks:
+      - id: prettier
+        name: Prettier format check
+        language: node
+        entry: npx prettier --write
+        types_or: [javascript, json, markdown, yaml]
+        exclude: ^(node_modules/|playwright-report/|reports/|CHANGELOG\.md)

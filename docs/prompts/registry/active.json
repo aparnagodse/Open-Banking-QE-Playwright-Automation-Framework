@@ -1,0 +1,8 @@
+{
+  "_comment": "Prompt version registry — Open Banking QE Platform. Edit this file to change which prompt version is active. See docs/prompts/README.md for governance rules.",
+  "_last_updated": "2025",
+  "_updated_by": "QE Platform Lead",
+  "scenario-generator": "v1",
+  "data-generator": "v1",
+  "failure-analysis": "v1"
+}
