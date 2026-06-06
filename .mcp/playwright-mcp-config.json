@@ -1,0 +1,16 @@
+{
+  "name": "open-banking-qe-playwright-mcp",
+  "version": "1.0.0",
+  "description": "Playwright MCP configuration for AI-assisted open banking QE platform",
+  "mcp": {
+    "tooling": "playwright",
+    "enabled": true,
+    "entryPoint": "src/ai",
+    "agent": "copilot",
+    "features": [
+      "scenario-generation",
+      "data-generation",
+      "defect-analysis"
+    ]
+  }
+}
