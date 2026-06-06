@@ -1,0 +1,301 @@
+{
+  "userStory": {
+    "jiraKey": "CDR-101",
+    "summary": "Validate customer account data sharing through Open Banking API",
+    "epic": "Open Banking Accounts API",
+    "acceptanceCriteria": [
+      "Customer account response must include accountId",
+      "Customer account response must include displayName",
+      "Customer account response must include productCategory",
+      "API response must match agreed CDR contract"
+    ]
+  },
+  "analysis": {
+    "summary": "Open Banking user story analysis summary.",
+    "riskAreas": [
+      "Open Banking / CDR compliance",
+      "Consent lifecycle management",
+      "Account data exposure",
+      "Transaction data accuracy",
+      "API contract drift",
+      "Security of authentication flows",
+      "Account selection and masking"
+    ],
+    "complianceAreas": [
+      "CDR contract compliance",
+      "OAuth token and scope validation",
+      "FAPI security requirements",
+      "Privacy and data minimisation",
+      "Accessibility for regulatory reporting"
+    ],
+    "suggestedTests": [
+      "ST: Validate critical account and consent workflows",
+      "SIT: Validate end-to-end API contract and downstream integration",
+      "API: Validate CDR response schema and status codes",
+      "Contract: Validate payload against Open Banking JSON schema",
+      "Accessibility: Validate transparency and consent UI elements",
+      "Security: Validate token scope, expiry, and header protections"
+    ]
+  },
+  "stCandidates": [
+    {
+      "scenarioId": "st-001",
+      "title": "ST: Validate account contract for Open Banking scenario",
+      "description": "Verify that account response fields match the Open Banking contract and business rules.",
+      "steps": [
+        {
+          "id": "account-contract-validation-1",
+          "description": "Prepare account API request payload according to user story requirements.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "account-contract-validation-2",
+          "description": "Call the account API endpoint for the authorised user.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-contract-validation-3",
+          "description": "Validate the response includes accountId, displayName, and productCategory.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-contract-validation-4",
+          "description": "Confirm the response matches the allowed CDR contract schema.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "ST",
+        "Contract",
+        "Account"
+      ]
+    },
+    {
+      "scenarioId": "st-002",
+      "title": "ST: Validate consent lifecycle for Open Banking scenario",
+      "description": "Verify consent creation, authorisation, and activation flows in a functional test.",
+      "steps": [
+        {
+          "id": "consent-lifecycle-validation-1",
+          "description": "Create consent with the required account access and scope.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "consent-lifecycle-validation-2",
+          "description": "Authorise the consent through the simulated user consent flow.",
+          "actionType": "Action"
+        },
+        {
+          "id": "consent-lifecycle-validation-3",
+          "description": "Activate the consent and verify status is Active.",
+          "actionType": "Action"
+        },
+        {
+          "id": "consent-lifecycle-validation-4",
+          "description": "Revoke the consent and verify the status transitions to Revoked.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "ST",
+        "Consent",
+        "Security"
+      ]
+    },
+    {
+      "scenarioId": "sit-001",
+      "title": "SIT: End-to-end account and transaction integration for Open Banking scenario",
+      "description": "Validate integrated account and transaction workflows across service boundaries.",
+      "steps": [
+        {
+          "id": "account-transaction-integration-1",
+          "description": "Execute account retrieval with a valid consent token.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "account-transaction-integration-2",
+          "description": "Request related transaction history for the selected account.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-transaction-integration-3",
+          "description": "Verify transaction data is returned and linked to the correct account.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-transaction-integration-4",
+          "description": "Confirm integration results match expected Open Banking business rules.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "SIT",
+        "Integration",
+        "Transaction"
+      ]
+    },
+    {
+      "scenarioId": "sit-002",
+      "title": "SIT: Security and compliance validation for Open Banking scenario",
+      "description": "Validate OAuth, FAPI, and contract compliance in an integrated environment.",
+      "steps": [
+        {
+          "id": "security-compliance-validation-1",
+          "description": "Generate an OAuth token with the required scopes for CDR access.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "security-compliance-validation-2",
+          "description": "Submit a protected API request and validate the response headers.",
+          "actionType": "Action"
+        },
+        {
+          "id": "security-compliance-validation-3",
+          "description": "Verify the response meets FAPI and CDR contract expectations.",
+          "actionType": "Action"
+        },
+        {
+          "id": "security-compliance-validation-4",
+          "description": "Confirm failed or expired tokens are rejected with the correct status.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "SIT",
+        "Security",
+        "Compliance"
+      ]
+    }
+  ],
+  "sitCandidates": [
+    {
+      "scenarioId": "st-001",
+      "title": "ST: Validate account contract for Open Banking scenario",
+      "description": "Verify that account response fields match the Open Banking contract and business rules.",
+      "steps": [
+        {
+          "id": "account-contract-validation-1",
+          "description": "Prepare account API request payload according to user story requirements.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "account-contract-validation-2",
+          "description": "Call the account API endpoint for the authorised user.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-contract-validation-3",
+          "description": "Validate the response includes accountId, displayName, and productCategory.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-contract-validation-4",
+          "description": "Confirm the response matches the allowed CDR contract schema.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "ST",
+        "Contract",
+        "Account"
+      ]
+    },
+    {
+      "scenarioId": "st-002",
+      "title": "ST: Validate consent lifecycle for Open Banking scenario",
+      "description": "Verify consent creation, authorisation, and activation flows in a functional test.",
+      "steps": [
+        {
+          "id": "consent-lifecycle-validation-1",
+          "description": "Create consent with the required account access and scope.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "consent-lifecycle-validation-2",
+          "description": "Authorise the consent through the simulated user consent flow.",
+          "actionType": "Action"
+        },
+        {
+          "id": "consent-lifecycle-validation-3",
+          "description": "Activate the consent and verify status is Active.",
+          "actionType": "Action"
+        },
+        {
+          "id": "consent-lifecycle-validation-4",
+          "description": "Revoke the consent and verify the status transitions to Revoked.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "ST",
+        "Consent",
+        "Security"
+      ]
+    },
+    {
+      "scenarioId": "sit-001",
+      "title": "SIT: End-to-end account and transaction integration for Open Banking scenario",
+      "description": "Validate integrated account and transaction workflows across service boundaries.",
+      "steps": [
+        {
+          "id": "account-transaction-integration-1",
+          "description": "Execute account retrieval with a valid consent token.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "account-transaction-integration-2",
+          "description": "Request related transaction history for the selected account.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-transaction-integration-3",
+          "description": "Verify transaction data is returned and linked to the correct account.",
+          "actionType": "Action"
+        },
+        {
+          "id": "account-transaction-integration-4",
+          "description": "Confirm integration results match expected Open Banking business rules.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "SIT",
+        "Integration",
+        "Transaction"
+      ]
+    },
+    {
+      "scenarioId": "sit-002",
+      "title": "SIT: Security and compliance validation for Open Banking scenario",
+      "description": "Validate OAuth, FAPI, and contract compliance in an integrated environment.",
+      "steps": [
+        {
+          "id": "security-compliance-validation-1",
+          "description": "Generate an OAuth token with the required scopes for CDR access.",
+          "actionType": "Setup"
+        },
+        {
+          "id": "security-compliance-validation-2",
+          "description": "Submit a protected API request and validate the response headers.",
+          "actionType": "Action"
+        },
+        {
+          "id": "security-compliance-validation-3",
+          "description": "Verify the response meets FAPI and CDR contract expectations.",
+          "actionType": "Action"
+        },
+        {
+          "id": "security-compliance-validation-4",
+          "description": "Confirm failed or expired tokens are rejected with the correct status.",
+          "actionType": "Verify"
+        }
+      ],
+      "tags": [
+        "SIT",
+        "Security",
+        "Compliance"
+      ]
+    }
+  ],
+  "generatedAt": "2026-06-06T21:44:30.499Z"
+}
