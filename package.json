@@ -18,7 +18,7 @@
     "test:contract": "npx playwright test tests/contract",
     "test:regression": "npx playwright test tests/regression",
     "test:security": "npx playwright test tests/security",
-    "test:daily": "npm run test:st && npm run test:sit && npm run test:contract && npm run test:accessibility",
+    "test:daily": "npx playwright test tests/st tests/sit tests/contract tests/accessibility",
     "generate:scenarios": "tsx src/services/storyScenarioDemo.ts",
     "report:daily": "tsx src/reporting/dailyExecutionReport.ts",
     "qe:daily": "npm run generate:scenarios && npm run test:daily && npm run report:daily",

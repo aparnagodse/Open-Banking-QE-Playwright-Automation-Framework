@@ -1,16 +1,16 @@
 # Daily Execution Summary
 
-**Generated At:** 2026-06-06T22:15:30.017Z
-**Source File:** Not found
+**Generated At:** 2026-06-06T22:38:19.908Z
+**Source File:** /Users/aparnagodse/Documents/Open-Banking-QE-Playwright-Automation-Framework/test-results/results.json
 
 ## Test Summary
 
-- Total tests: 0
-- Passed: 0
+- Total tests: 6
+- Passed: 6
 - Failed: 0
 - Skipped: 0
-- Pass percentage: 0%
-- Release confidence: Red
+- Pass percentage: 100%
+- Release confidence: Green
 
 ## Notes
 

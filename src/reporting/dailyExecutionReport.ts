@@ -21,6 +21,7 @@ const candidateJsonFiles = [
   path.join(process.cwd(), 'playwright-report', 'report.json'),
   path.join(process.cwd(), 'playwright-report', 'results.json'),
   path.join(process.cwd(), 'test-results', 'report.json'),
+  path.join(process.cwd(), 'test-results', 'results.json'),
 ];
 
 async function fileExists(filePath: string): Promise<boolean> {
@@ -49,32 +50,55 @@ function countTestsFromObject(data: any): { total: number; passed: number; faile
     return { total: 0, passed: 0, failed: 0, skipped: 0 };
   }
 
-  const stats = data.stats ?? data.summary ?? data;
+  let total = 0;
+  let passed = 0;
+  let failed = 0;
+  let skipped = 0;
 
-  if (stats && typeof stats === 'object') {
-    const passed = Number(stats.passed ?? stats.passes ?? stats.ok ?? 0);
-    const failed = Number(stats.failed ?? stats.failures ?? stats.unexpected ?? 0);
-    const skipped = Number(stats.skipped ?? stats.pending ?? stats.todo ?? 0);
-    const total = Number(stats.total ?? stats.tests ?? passed + failed + skipped);
-    return { total, passed, failed, skipped };
+  function traverseSuites(suite: any): void {
+    if (!suite || typeof suite !== 'object') return;
+
+    // Process nested suites recursively
+    if (Array.isArray(suite.suites)) {
+      for (const nestedSuite of suite.suites) {
+        traverseSuites(nestedSuite);
+      }
+    }
+
+    // Process specs in this suite
+    if (Array.isArray(suite.specs)) {
+      for (const spec of suite.specs) {
+        if (spec && typeof spec === 'object' && Array.isArray(spec.tests)) {
+          for (const test of spec.tests) {
+            if (test && typeof test === 'object' && Array.isArray(test.results)) {
+              for (const result of test.results) {
+                if (result && typeof result === 'object') {
+                  total += 1;
+                  const status = String(result.status ?? '').toLowerCase();
+                  if (status === 'passed') {
+                    passed += 1;
+                  } else if (status === 'failed' || status === 'timedout' || status === 'interrupted') {
+                    failed += 1;
+                  } else if (status === 'skipped') {
+                    skipped += 1;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
-  if (Array.isArray(data.tests)) {
-    const counts = data.tests.reduce(
-      (acc: { total: number; passed: number; failed: number; skipped: number }, test: any) => {
-        acc.total += 1;
-        const status = String(test.status ?? '').toLowerCase();
-        if (status === 'passed' || status === 'ok') acc.passed += 1;
-        if (status === 'failed' || status === 'error') acc.failed += 1;
-        if (status === 'skipped' || status === 'pending' || status === 'todo') acc.skipped += 1;
-        return acc;
-      },
-      { total: 0, passed: 0, failed: 0, skipped: 0 }
-    );
-    return counts;
+  // Start traversal from root suites
+  if (Array.isArray(data.suites)) {
+    for (const suite of data.suites) {
+      traverseSuites(suite);
+    }
   }
 
-  return { total: 0, passed: 0, failed: 0, skipped: 0 };
+  return { total, passed, failed, skipped };
 }
 
 async function discoverPlaywrightJson(): Promise<string | null> {

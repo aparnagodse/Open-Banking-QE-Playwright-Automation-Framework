@@ -8,7 +8,8 @@ export default defineConfig({
   reporter: [
     ['html'],
     ['line'],
-    ['allure-playwright']
+    ['allure-playwright'],
+    ['json', { outputFile: 'test-results/results.json' }]
   ],
 
   use: {
