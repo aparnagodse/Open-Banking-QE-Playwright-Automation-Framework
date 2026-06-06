@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-import consentSchema from "../../../contracts/cdr/consent.schema.json" assert { type: "json" };
+import consentSchema from "../../contracts/cdr/consent.schema.json" assert { type: "json" };
 
-import { validateSchema } from "../../../utils/schemaValidator.js";
+import { validateSchema } from "../../utils/schemaValidator.js";
 
 test.describe("Open Banking Consent Lifecycle Tests", () => {
 

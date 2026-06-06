@@ -1,5 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 export interface ExecutionSummary {
   totalTests: number;
@@ -151,6 +152,26 @@ export async function generateDailyExecutionReport(): Promise<ExecutionSummary> 
   await fs.writeFile(MD_OUTPUT_PATH, markdownLines.join('\n'), 'utf-8');
 
   return summary;
+}
+
+async function main(): Promise<void> {
+  const summary = await generateDailyExecutionReport();
+  console.log('Daily execution report generated successfully.');
+  console.log(`JSON output: ${JSON_OUTPUT_PATH}`);
+  console.log(`Markdown output: ${MD_OUTPUT_PATH}`);
+  console.log(`Total tests: ${summary.totalTests}`);
+  console.log(`Passed: ${summary.passed}`);
+  console.log(`Failed: ${summary.failed}`);
+  console.log(`Skipped: ${summary.skipped}`);
+  console.log(`Release confidence: ${summary.releaseConfidence}`);
+}
+
+const __filename = fileURLToPath(import.meta.url);
+if (process.argv[1] === __filename) {
+  main().catch((error) => {
+    console.error('Failed to generate daily execution report:', error);
+    process.exit(1);
+  });
 }
 
 export async function readDailyExecutionSummary(): Promise<ExecutionSummary | null> {
