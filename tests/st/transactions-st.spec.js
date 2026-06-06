@@ -1,8 +1,8 @@
 import { test, expect } from "@playwright/test";
 
-import transactionSchema from "../../../contracts/cdr/transaction.schema.json" assert { type: "json" };
+import transactionSchema from "../../contracts/cdr/transaction.schema.json" assert { type: "json" };
 
-import { validateSchema } from "../../../utils/schemaValidator.js";
+import { validateSchema } from "../../utils/schemaValidator.js";
 
 test.describe("Open Banking Transaction Contract Tests", () => {
 

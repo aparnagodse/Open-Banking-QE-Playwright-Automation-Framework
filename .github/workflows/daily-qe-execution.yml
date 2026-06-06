@@ -1,0 +1,67 @@
+name: Daily QE Execution
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 2 * * *' # daily at 02:00 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  daily-qe:
+    name: Daily QE — run ST / SIT / Contract / Accessibility
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install npm dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run ST tests
+        run: npm run test:st
+
+      - name: Run SIT tests
+        run: npm run test:sit
+
+      - name: Run Contract tests
+        run: npm run test:contract
+
+      - name: Run Accessibility tests
+        run: npm run test:accessibility
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            playwright-report
+            screenshots
+            videos
+            test-results
+
+      - name: Upload Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Upload JUnit/test-results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-results
+          path: test-results
